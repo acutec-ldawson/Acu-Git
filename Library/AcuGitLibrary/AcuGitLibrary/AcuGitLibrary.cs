@@ -1196,14 +1196,38 @@ namespace AcuGitLibrary
         /// </summary>
         public string ID;
         /// <summary>
+        /// The <c>LibGit2Sharp.Commit</c> that this commit points to
+        /// </summary>
+        public LibGit2Sharp.Commit commit = null;
+        /// <summary>
+        /// The <c>LibGit2Sharp.Branch</c> that this commit is in
+        /// </summary>
+        public LibGit2Sharp.Branch branch = null;
+        /// <summary>
         /// Constructor of the CommitInfo class
+        ///     This Constructor will leave the <c>LibGit2Sharp</c> Branch object set to null
         /// </summary>
         /// <param name="branchName">The Branch the commit is in</param>
-        /// <param name="commit">The LibGit2 Commit object that this info is based around</param>
-        public CommitInfo(string branchName, LibGit2Sharp.Commit commit) {
+        /// <param name="_commit">The LibGit2 Commit object that this info is based around</param>
+        public CommitInfo(string branchName, LibGit2Sharp.Commit _commit) {
             BranchName = branchName;
             CommitShortMessage = commit.MessageShort;
             ID = commit.Id.ToString();
+            commit = _commit;
+        }
+        /// <summary>
+        /// Intitialize CommitInfo based off of <c>LibGit2Sharp</c> classes
+        ///     Most solid constructor
+        /// </summary>
+        /// <param name="_branch"><c>LibGit2Sharp.Branch</c>: The branch that this commit resides in</param>
+        /// <param name="_commit"><c>LibGit2Sharp.Commit</c>: The commit object that this info pertains to</param>
+        public CommitInfo(LibGit2Sharp.Branch _branch, LibGit2Sharp.Commit _commit)
+        {
+            BranchName = _branch.FriendlyName;
+            CommitShortMessage = commit.MessageShort;
+            ID = commit.Id.ToString();
+            commit = _commit;
+            branch = _branch;
         }
     }
 }

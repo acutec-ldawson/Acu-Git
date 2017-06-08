@@ -343,6 +343,18 @@
             <param name="commit">The Libgit2sharp.Commit that you wish to revert(delete)</param>
             <returns><c>bool</c>: Returns false if the revert fails, true if the revert succeeds</returns>
         </member>
+        <member name="M:AcuGitLibrary.Git.DeleteBranch(System.String)">
+            <summary>
+            Deletes the given branch
+            </summary>
+            <param name="branchName"><c>string</c>: The user friendly name of the branch that you wish to delete</param>
+        </member>
+        <member name="M:AcuGitLibrary.Git.DeleteBranch(LibGit2Sharp.Branch)">
+            <summary>
+            Deletes the given branch, based off the LibGit2Sharp.Branch class
+            </summary>
+            <param name="branch"><c>LibGit2Sharp.Branch</c>: The branch that you wish to delete</param>
+        </member>
         <member name="T:AcuGitLibrary.CommitInfo">
             <summary>
             Stores non-LibGit2 library info for referencing a Commit
@@ -363,12 +375,31 @@
             The Commit ID of the commit
             </summary>
         </member>
+        <member name="F:AcuGitLibrary.CommitInfo.commit">
+            <summary>
+            The <c>LibGit2Sharp.Commit</c> that this commit points to
+            </summary>
+        </member>
+        <member name="F:AcuGitLibrary.CommitInfo.branch">
+            <summary>
+            The <c>LibGit2Sharp.Branch</c> that this commit is in
+            </summary>
+        </member>
         <member name="M:AcuGitLibrary.CommitInfo.#ctor(System.String,LibGit2Sharp.Commit)">
             <summary>
             Constructor of the CommitInfo class
+                This Constructor will leave the <c>LibGit2Sharp</c> Branch object set to null
             </summary>
             <param name="branchName">The Branch the commit is in</param>
-            <param name="commit">The LibGit2 Commit object that this info is based around</param>
+            <param name="_commit">The LibGit2 Commit object that this info is based around</param>
+        </member>
+        <member name="M:AcuGitLibrary.CommitInfo.#ctor(LibGit2Sharp.Branch,LibGit2Sharp.Commit)">
+            <summary>
+            Intitialize CommitInfo based off of <c>LibGit2Sharp</c> classes
+                Most solid constructor
+            </summary>
+            <param name="_branch"><c>LibGit2Sharp.Branch</c>: The branch that this commit resides in</param>
+            <param name="_commit"><c>LibGit2Sharp.Commit</c>: The commit object that this info pertains to</param>
         </member>
     </members>
 </doc>
