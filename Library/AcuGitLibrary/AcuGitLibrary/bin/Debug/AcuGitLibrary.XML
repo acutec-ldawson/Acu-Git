@@ -343,6 +343,14 @@
             <param name="commit">The Libgit2sharp.Commit that you wish to revert(delete)</param>
             <returns><c>bool</c>: Returns false if the revert fails, true if the revert succeeds</returns>
         </member>
+        <member name="M:AcuGitLibrary.Git.Revert(AcuGitLibrary.CommitInfo)">
+            <summary>
+            This method is setup to revert a given commit based off of the <c>CommitInfo</c> class
+                <see cref="T:AcuGitLibrary.CommitInfo"/>
+            </summary>
+            <param name="info"><c>CommitInfo</c>: The CommitInfo object pertaining to the commit you would like to revert</param>
+            <returns></returns>
+        </member>
         <member name="M:AcuGitLibrary.Git.DeleteBranch(System.String)">
             <summary>
             Deletes the given branch
