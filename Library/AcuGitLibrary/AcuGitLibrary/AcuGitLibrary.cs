@@ -1151,6 +1151,29 @@ namespace AcuGitLibrary
             }
         }
         /// <summary>
+        /// This method is setup to revert a given commit based off of the <c>CommitInfo</c> class
+        ///     <see cref="CommitInfo"/>
+        /// </summary>
+        /// <param name="info"><c>CommitInfo</c>: The CommitInfo object pertaining to the commit you would like to revert</param>
+        /// <returns></returns>
+        public bool Revert(CommitInfo info)
+        {
+            bool val = false;
+            using (var repo = new Repository(repoPath))
+            {
+                LibGit2Sharp.RevertResult result = repo.Revert(info.commit, sign);
+                if (result.Status == RevertStatus.Conflicts)
+                {
+                    val = false;
+                }
+                else
+                {
+                    val = true;
+                }
+                return val;
+            }
+        }
+        /// <summary>
         /// Deletes the given branch
         /// </summary>
         /// <param name="branchName"><c>string</c>: The user friendly name of the branch that you wish to delete</param>
