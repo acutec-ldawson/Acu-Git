@@ -1105,7 +1105,7 @@ namespace AcuGitLibrary
                     //Checkout master, Stage and commit all
                     LibGit2Sharp.Commands.Checkout(repo, "master");
                     Stage();
-                    Commit("Conflicted Pick ... Hard Picked: "+commit.MessageShort);
+                    Commit(commit.Message);
                     //Delete new branch
                     repo.Branches.Remove("Temp");
                     repo.Reset(LibGit2Sharp.ResetMode.Soft, orig_Tip);
@@ -1150,11 +1150,6 @@ namespace AcuGitLibrary
                 return val;
             }
         }
-        /*
-         * New Features To-Do list:
-         *     1. A simple delete branch command
-         *
-         */ 
     }
     /// <summary>
     /// Stores non-LibGit2 library info for referencing a Commit
