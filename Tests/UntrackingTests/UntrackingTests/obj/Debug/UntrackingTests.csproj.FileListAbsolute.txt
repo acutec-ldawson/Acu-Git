@@ -1,0 +1,15 @@
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\bin\Debug\UntrackingTests.exe.config
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\bin\Debug\UntrackingTests.exe
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\bin\Debug\UntrackingTests.pdb
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\obj\Debug\UntrackingTests.csprojResolveAssemblyReference.cache
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\obj\Debug\UntrackingTests.Form1.resources
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\obj\Debug\UntrackingTests.Properties.Resources.resources
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\obj\Debug\UntrackingTests.csproj.GenerateResource.Cache
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\obj\Debug\UntrackingTests.exe
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\obj\Debug\UntrackingTests.pdb
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\bin\Debug\AcuGitLibrary.dll
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\bin\Debug\LibGit2Sharp.dll
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\bin\Debug\AcuGitLibrary.pdb
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\bin\Debug\AcuGitLibrary.xml
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\bin\Debug\LibGit2Sharp.pdb
+\\acutec.local\acutec\network\user folders\ldawson\my documents\visual studio 2015\Projects\UntrackingTests\UntrackingTests\bin\Debug\LibGit2Sharp.xml
