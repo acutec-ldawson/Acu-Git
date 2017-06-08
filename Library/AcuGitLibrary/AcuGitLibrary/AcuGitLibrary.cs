@@ -1150,6 +1150,34 @@ namespace AcuGitLibrary
                 return val;
             }
         }
+        /// <summary>
+        /// Deletes the given branch
+        /// </summary>
+        /// <param name="branchName"><c>string</c>: The user friendly name of the branch that you wish to delete</param>
+        public void DeleteBranch(string branchName) {
+            using (var repo = new LibGit2Sharp.Repository(repoPath)) {
+                try
+                {
+                    repo.Branches.Remove(branchName);
+                }
+                catch (Exception e) { }
+            }
+        }
+        /// <summary>
+        /// Deletes the given branch, based off the LibGit2Sharp.Branch class
+        /// </summary>
+        /// <param name="branch"><c>LibGit2Sharp.Branch</c>: The branch that you wish to delete</param>
+        public void DeleteBranch(LibGit2Sharp.Branch branch)
+        {
+            using (var repo = new LibGit2Sharp.Repository(repoPath))
+            {
+                try
+                {
+                    repo.Branches.Remove(branch);
+                }
+                catch (Exception e) { }
+            }
+        }
     }
     /// <summary>
     /// Stores non-LibGit2 library info for referencing a Commit
