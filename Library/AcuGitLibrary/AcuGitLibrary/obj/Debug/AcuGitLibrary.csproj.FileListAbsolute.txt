@@ -13,3 +13,4 @@
 \\acutec.local\Acutec\Network\User Folders\ldawson\My Documents\Visual Studio 2015\Projects\AcuGitLibrary\AcuGitLibrary\bin\Debug\LibGit2Sharp.xml
 \\acutec.local\Acutec\Network\User Folders\ldawson\My Documents\Visual Studio 2015\Projects\AcuGitLibrary\AcuGitLibrary\obj\Debug\AcuGitLibrary.dll
 \\acutec.local\Acutec\Network\User Folders\ldawson\My Documents\Visual Studio 2015\Projects\AcuGitLibrary\AcuGitLibrary\obj\Debug\AcuGitLibrary.pdb
+\\acutec.local\Acutec\Network\User Folders\ldawson\My Documents\Visual Studio 2015\Projects\AcuGitLibrary\AcuGitLibrary\obj\Debug\AcuGitLibrary.csprojResolveAssemblyReference.cache
