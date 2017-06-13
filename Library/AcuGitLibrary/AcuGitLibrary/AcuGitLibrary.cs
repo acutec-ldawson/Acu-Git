@@ -1204,9 +1204,9 @@ namespace AcuGitLibrary
         /// <summary>
         /// Returns an array of the changes between the master version of a file, and the version in a given branch
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="branchName"></param>
-        /// <returns></returns>
+        /// <param name="fileName">The file that you wish to diff</param>
+        /// <param name="branchName">The name of the branch you wish to compare against the master</param>
+        /// <returns>An array of diff line statements including the line that the change has occured in</returns>
         public string[] Diff(string fileName, string branchName) {
             string[] files = Directory.GetFiles(repoPath);
             string filePath = "";
@@ -1249,27 +1249,44 @@ namespace AcuGitLibrary
             Max += 3;
             for (int i = 0; i < Count; i++)
             {
+                string type = "===";
                 try
                 {
                     if (lines_1[i] != lines_2[i])
                     {
-                        string s = String.Format("Line {2} >>> {0} Old:{1}", lines_2[i].PadRight(Max), lines_1[i].PadRight(Max), i.ToString().PadRight(4));
-                        response.Add(s);
+                        type = "Diff";
                     }
                 }
                 catch (Exception e)
                 {
                     try
                     {
-                        string s = String.Format("Line {2} >>> {0} Old:{1}","----".PadRight(3), lines_1[i].PadRight(Max), i.ToString().PadRight(4));
-                        response.Add(s);
+                        type = "-End";
                     }
                     catch (Exception e2)
                     {
-                        string s = String.Format("Line {2} >>> {1} New:{0}", lines_2[i].PadRight(Max), "++++".PadRight(3), i.ToString().PadRight(4));
-                        response.Add(s);
+                        type = "+End";
                     }
                 }
+                string s = "";
+                switch (type) {
+                    case "Diff":
+                        s = String.Format("Line {2} >>> Diff New:{0} Old:{1}", lines_2[i].PadRight(Max), lines_1[i].PadRight(Max), i.ToString().PadRight(4));
+                        break;
+                    case "+End":
+                        s = String.Format("Line {2} >>> {1} New:{0}", lines_2[i].PadRight(Max), "++++".PadRight(3), i.ToString().PadRight(4));
+                        break;
+                    case "-End":
+                        s = String.Format("Line {2} >>> {0} Old:{1}", "----".PadRight(3), lines_1[i].PadRight(Max), i.ToString().PadRight(4));
+                        break;
+                    case "-In":
+                        s = String.Format("Line {2} >>> {0} New:{1}", "----".PadRight(3), lines_2[i].PadRight(Max), i.ToString().PadRight(4));
+                        break;
+                    case "+In":
+                        s = String.Format("Line {2} >>> {0} New:{1}", "++++".PadRight(3), lines_2[i].PadRight(Max), i.ToString().PadRight(4));
+                        break;                
+                }
+                response.Add(s);
             }
             return response.ToArray<string>();
         }
