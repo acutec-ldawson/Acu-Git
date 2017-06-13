@@ -1226,18 +1226,20 @@ namespace AcuGitLibrary
             using (var repo = new LibGit2Sharp.Repository(repoPath)) {
                 LibGit2Sharp.Commands.Checkout(repo, branchName);
                 string[] branch_Lines = File.ReadAllLines(filePath);
-                if (branch_Lines != null)
+                if (branch_Lines != null && master_Lines != null)
                 {
                     int max = branch_Lines.Length;
                     if (master_Lines.Length > max) max = master_Lines.Length;
-                    return lineDiffer(master_Lines, branch_Lines, max);
+                    LibGit2Sharp.Commands.Checkout(repo, "master");
+                    return lineDiffer(master_Lines, branch_Lines);
                 }
                 else {
+                    LibGit2Sharp.Commands.Checkout(repo, "master");
                     return null;
                 }
             }
         }
-        private string[] lineDiffer(string[] lines_1, string[] lines_2, int n) {
+        private string[] lineDiffer(string[] lines_1, string[] lines_2) {
             List<string> response = new List<string>();
             int Count = lines_1.Length;
             if (lines_2.Length > Count) Count = lines_2.Length;
@@ -1259,6 +1261,7 @@ namespace AcuGitLibrary
                 }
                 catch (Exception e)
                 {
+                    type = "????";
                     try
                     {
                         type = "-End";
@@ -1268,27 +1271,24 @@ namespace AcuGitLibrary
                         type = "+End";
                     }
                 }
-                string s = "";
+                string s = type;
                 switch (type) {
                     case "Diff":
-                        s = String.Format("Line {2} >>> Diff New:{0} Old:{1}", lines_2[i].PadRight(Max), lines_1[i].PadRight(Max), i.ToString().PadRight(4));
+                        s = String.Format("Line {2} >>> Diff New:{0} Old:{1}", lines_2[i].PadRight(Max), lines_1[i].PadRight(Max), (i + 1).ToString().PadRight(4));
+                        response.Add(s);
                         break;
                     case "+End":
-                        s = String.Format("Line {2} >>> {1} New:{0}", lines_2[i].PadRight(Max), "++++".PadRight(3), i.ToString().PadRight(4));
+                        s = String.Format("Line {2} >>> {1} New:{0}", lines_2[i].PadRight(Max), "++++".PadRight(3), (i + 1).ToString().PadRight(4));
+                        response.Add(s);
                         break;
                     case "-End":
-                        s = String.Format("Line {2} >>> {0} Old:{1}", "----".PadRight(3), lines_1[i].PadRight(Max), i.ToString().PadRight(4));
+                        s = String.Format("Line {2} >>> {0} Old:{1}", "----".PadRight(3), lines_1[i].PadRight(Max), (i + 1).ToString().PadRight(4));
+                        response.Add(s);
                         break;
-                    case "-In":
-                        s = String.Format("Line {2} >>> {0} New:{1}", "----".PadRight(3), lines_2[i].PadRight(Max), i.ToString().PadRight(4));
-                        break;
-                    case "+In":
-                        s = String.Format("Line {2} >>> {0} New:{1}", "++++".PadRight(3), lines_2[i].PadRight(Max), i.ToString().PadRight(4));
-                        break;                
                 }
-                response.Add(s);
+                
             }
-            return response.ToArray<string>();
+            return response.ToArray();
         }
     }
     /// <summary>
