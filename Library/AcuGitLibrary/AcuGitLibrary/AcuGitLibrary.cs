@@ -1020,7 +1020,8 @@ namespace AcuGitLibrary
                 }
             }
         }
-        private void HardPick(LibGit2Sharp.Commit commit, LibGit2Sharp.Branch Working) {
+        private void HardPick(LibGit2Sharp.Commit commit, LibGit2Sharp.Branch Working)
+        {
             //first find the last commit in the master before this branch differs
             Reset(ResetMode.Hard);
             using (var repo = new LibGit2Sharp.Repository(repoPath))
@@ -1028,7 +1029,8 @@ namespace AcuGitLibrary
                 LibGit2Sharp.Branch master = null;
                 foreach (LibGit2Sharp.Branch b in repo.Branches)
                 {
-                    if (b.FriendlyName == "master") {
+                    if (b.FriendlyName == "master")
+                    {
                         master = b;
                     }
                 }
@@ -1045,33 +1047,38 @@ namespace AcuGitLibrary
                 }
                 LibGit2Sharp.Commit last = null;
                 int max = WorkingCommits.Count();
-                for(int i = 0; i < max;i++) {
+                for (int i = 0; i < max; i++)
+                {
                     //Find the last shared commit
                     if (MasterCommits.Peek() == WorkingCommits.Peek())
                     {
                         last = MasterCommits.Pop();
                         WorkingCommits.Pop();
                     }
-                    else {
+                    else
+                    {
                         break;
                     }
                 }
-                if (last != null) {
+                if (last != null)
+                {
                     //Create a new branch and hard reset it to the "last commit"
                     LibGit2Sharp.Branch temp = repo.CreateBranch("Temp");
-                        //Checkout the new branch
+                    //Checkout the new branch
                     LibGit2Sharp.Commands.Checkout(repo, "Temp");
-                        //Hard reset the new branch to "Last"
+                    //Hard reset the new branch to "Last"
                     repo.Reset(LibGit2Sharp.ResetMode.Hard, last);
                     //Cherry Pick the original commit into the new branch
                     LibGit2Sharp.CherryPickResult result = repo.CherryPick(commit, sign);
                     //Cherry-Pick all the commits following "last" from master onto Temp
-                        //Need to switch order as well to go to top down through Master Commits, that way latest changes are kept when reverting conflicted commits
+                    //Need to switch order as well to go to top down through Master Commits, that way latest changes are kept when reverting conflicted commits
                     Stack<LibGit2Sharp.Commit> TopDownMasterCommits = new Stack<LibGit2Sharp.Commit>();
-                    foreach (LibGit2Sharp.Commit C in MasterCommits) {
+                    foreach (LibGit2Sharp.Commit C in MasterCommits)
+                    {
                         TopDownMasterCommits.Push(C);
                     }
-                    foreach (LibGit2Sharp.Commit C in TopDownMasterCommits) {
+                    foreach (LibGit2Sharp.Commit C in TopDownMasterCommits)
+                    {
                         LibGit2Sharp.CherryPickResult r = repo.CherryPick(C, sign);
                         try
                         {
@@ -1081,25 +1088,27 @@ namespace AcuGitLibrary
                                 Reset(ResetMode.Hard);
                                 //Checkout Master
                                 LibGit2Sharp.Commands.Checkout(repo, "master");
-                                    //Revert the conflicted commit on master
+                                //Revert the conflicted commit on master
                                 bool rStat = Revert(C);
                                 //If the revert fails then clean index
-                                if (!rStat) {
+                                if (!rStat)
+                                {
                                     Reset(ResetMode.Hard);
                                 }
                                 //Checkout Temp and Continue with picking
                                 LibGit2Sharp.Commands.Checkout(repo, "Temp");
                             }
                         }
-                        catch (Exception e) {
+                        catch (Exception e)
+                        {
                             continue;
                         }
                     }
                     //Soft reset the new branch to top of the master
-                        //Get the tip commit
+                    //Get the tip commit
                     LibGit2Sharp.Commands.Checkout(repo, "master");
                     LibGit2Sharp.Commit tip = repo.Head.Tip;
-                        //Then reset to it
+                    //Then reset to it
                     LibGit2Sharp.Commands.Checkout(repo, "Temp");
                     repo.Reset(LibGit2Sharp.ResetMode.Soft, tip);
                     //Checkout master, Stage and commit all
@@ -1114,7 +1123,8 @@ namespace AcuGitLibrary
                 }
             }
         }
-        private Stack<LibGit2Sharp.Commit> GetCommits(LibGit2Sharp.Branch B) {
+        private Stack<LibGit2Sharp.Commit> GetCommits(LibGit2Sharp.Branch B)
+        {
             Stack<LibGit2Sharp.Commit> CStack = new Stack<LibGit2Sharp.Commit>();
             foreach (LibGit2Sharp.Commit C in B.Commits)
             {
@@ -1135,16 +1145,18 @@ namespace AcuGitLibrary
         /// </summary>
         /// <param name="commit">The Libgit2sharp.Commit that you wish to revert(delete)</param>
         /// <returns><c>bool</c>: Returns false if the revert fails, true if the revert succeeds</returns>
-        public bool Revert(LibGit2Sharp.Commit commit) {
+        public bool Revert(LibGit2Sharp.Commit commit)
+        {
             bool val = false;
             using (var repo = new Repository(repoPath))
             {
-                LibGit2Sharp.RevertResult result = repo.Revert(commit,sign);
+                LibGit2Sharp.RevertResult result = repo.Revert(commit, sign);
                 if (result.Status == RevertStatus.Conflicts)
                 {
                     val = false;
                 }
-                else {
+                else
+                {
                     val = true;
                 }
                 return val;
@@ -1177,8 +1189,10 @@ namespace AcuGitLibrary
         /// Deletes the given branch
         /// </summary>
         /// <param name="branchName"><c>string</c>: The user friendly name of the branch that you wish to delete</param>
-        public void DeleteBranch(string branchName) {
-            using (var repo = new LibGit2Sharp.Repository(repoPath)) {
+        public void DeleteBranch(string branchName)
+        {
+            using (var repo = new LibGit2Sharp.Repository(repoPath))
+            {
                 try
                 {
                     repo.Branches.Remove(branchName);
@@ -1207,23 +1221,28 @@ namespace AcuGitLibrary
         /// <param name="fileName">The file that you wish to diff</param>
         /// <param name="branchName">The name of the branch you wish to compare against the master</param>
         /// <returns>An array of diff line statements including the line that the change has occured in</returns>
-        public string[] Diff(string fileName, string branchName) {
+        public string[] Diff(string fileName, string branchName)
+        {
             string[] files = Directory.GetFiles(repoPath);
             string filePath = "";
-            foreach (string file in files) {
-                if (Path.GetFileName(file) == fileName) {
+            foreach (string file in files)
+            {
+                if (Path.GetFileName(file) == fileName)
+                {
                     filePath = file;
                 }
             }
             string[] master_Lines;
             if (filePath != "")
             {
-              master_Lines = File.ReadAllLines(filePath);
+                master_Lines = File.ReadAllLines(filePath);
             }
-            else {
+            else
+            {
                 return null;
             }
-            using (var repo = new LibGit2Sharp.Repository(repoPath)) {
+            using (var repo = new LibGit2Sharp.Repository(repoPath))
+            {
                 LibGit2Sharp.Commands.Checkout(repo, branchName);
                 string[] branch_Lines = File.ReadAllLines(filePath);
                 if (branch_Lines != null && master_Lines != null)
@@ -1233,13 +1252,15 @@ namespace AcuGitLibrary
                     LibGit2Sharp.Commands.Checkout(repo, "master");
                     return lineDiffer(master_Lines, branch_Lines);
                 }
-                else {
+                else
+                {
                     LibGit2Sharp.Commands.Checkout(repo, "master");
                     return null;
                 }
             }
         }
-        private string[] lineDiffer(string[] lines_1, string[] lines_2) {
+        private string[] lineDiffer(string[] lines_1, string[] lines_2)
+        {
             List<string> response = new List<string>();
             int Count = lines_1.Length;
             if (lines_2.Length > Count) Count = lines_2.Length;
@@ -1249,46 +1270,61 @@ namespace AcuGitLibrary
                 if (s.Length > Max) Max = s.Length;
             }
             Max += 3;
-            for (int i = 0; i < Count; i++)
+            try
             {
-                string type = "===";
-                try
+                for (int i = 0; i < Count; i++)
                 {
-                    if (lines_1[i] != lines_2[i])
-                    {
-                        type = "Diff";
-                    }
-                }
-                catch (Exception e)
-                {
-                    type = "????";
+                    string type = "===";
                     try
                     {
-                        type = "-End";
+                        if (lines_1[i] != lines_2[i])
+                        {
+                            type = "Diff";
+                            //Make check to see if there were in line changes
+                            //For line had info deleted Iterate through (i-1) to lines_1.length and check to see if the lines_2[i] string is contained within another string
+                        }
                     }
-                    catch (Exception e2)
+                    catch (Exception e)
                     {
-                        type = "+End";
+                        //This is the event that lines_#[i] is greater than the number of elements meaning that one file is longer than the other
+                        type = "????";
+                        try
+                        {
+                            type = "-End";
+                        }
+                        catch (Exception e2)
+                        {
+                            type = "+End";
+                        }
                     }
+                    string s = type;
+                    switch (type)
+                    {
+                        case "Diff":
+                            s = String.Format("Line {2} >>> Diff New:{0} Old:{1}", lines_2[i].PadRight(Max), lines_1[i].PadRight(Max), (i + 1).ToString().PadRight(4));
+                            response.Add(s);
+                            break;
+                        case "+End":
+                            s = String.Format("Line {2} >>> {1} New:{0}", lines_2[i].PadRight(Max), "++++".PadRight(3), (i + 1).ToString().PadRight(4));
+                            response.Add(s);
+                            break;
+                        case "-End":
+                            s = String.Format("Line {2} >>> {0} Old:{1}", "----".PadRight(3), lines_1[i].PadRight(Max), (i + 1).ToString().PadRight(4));
+                            response.Add(s);
+                            break;
+                    }
+
                 }
-                string s = type;
-                switch (type) {
-                    case "Diff":
-                        s = String.Format("Line {2} >>> Diff New:{0} Old:{1}", lines_2[i].PadRight(Max), lines_1[i].PadRight(Max), (i + 1).ToString().PadRight(4));
-                        response.Add(s);
-                        break;
-                    case "+End":
-                        s = String.Format("Line {2} >>> {1} New:{0}", lines_2[i].PadRight(Max), "++++".PadRight(3), (i + 1).ToString().PadRight(4));
-                        response.Add(s);
-                        break;
-                    case "-End":
-                        s = String.Format("Line {2} >>> {0} Old:{1}", "----".PadRight(3), lines_1[i].PadRight(Max), (i + 1).ToString().PadRight(4));
-                        response.Add(s);
-                        break;
-                }
-                
+                return response.ToArray();
             }
-            return response.ToArray();
+            catch (Exception e) {
+                string[] b = { "broken", "lines read incorrectly" };
+                try
+                {
+                    return b;
+                }
+                catch (Exception e3) { return null; }
+            }
         }
     }
     /// <summary>
