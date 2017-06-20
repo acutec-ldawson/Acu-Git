@@ -1265,31 +1265,31 @@ namespace AcuGitLibrary
             int Count = lines_1.Length;
             if (lines_2.Length > Count) Count = lines_2.Length;
             int Max = 0;
-            foreach (string s in lines_2)
+            string type = "===";
+            foreach (string st in lines_2)
             {
-                if (s.Length > Max) Max = s.Length;
+                if (st.Length > Max) Max = st.Length;
             }
             Max += 3;
-            try
-            {
                 for (int i = 0; i < Count; i++)
                 {
-                    string type = "===";
+                try
+                {
+                    type = "===";
                     try
                     {
                         if (lines_1[i] != lines_2[i])
                         {
                             type = "Diff";
                             //Make check to see if there were in line changes
-                            //For line had info deleted Iterate through (i-1) to lines_1.length and check to see if the lines_2[i] string is contained within another string
+                            //For line had info deleted Iterate through (i-1) to lines_1.length and check to see if the lines_2[i] string is at least 75% similar
                         }
                     }
                     catch (Exception e)
                     {
-                        //This is the event that lines_#[i] is greater than the number of elements meaning that one file is longer than the other
-                        type = "????";
                         try
                         {
+                            string st = lines_1[i];
                             type = "-End";
                         }
                         catch (Exception e2)
@@ -1297,11 +1297,23 @@ namespace AcuGitLibrary
                             type = "+End";
                         }
                     }
+                }
+                catch (Exception e)
+                {
+                    string[] b = { "broken", "lines diffed incorrectly" };
+                    try
+                    {
+                        return b;
+                    }
+                    catch (Exception e3) { return null; }
+                }
+                try
+                {
                     string s = type;
                     switch (type)
                     {
                         case "Diff":
-                            s = String.Format("Line {2} >>> Diff New:{0} Old:{1}", lines_2[i].PadRight(Max), lines_1[i].PadRight(Max), (i + 1).ToString().PadRight(4));
+                            s = String.Format("Line {2} >>> ~~~~ New:{0} Old:{1}", lines_2[i].PadRight(Max), lines_1[i].PadRight(Max), (i + 1).ToString().PadRight(4));
                             response.Add(s);
                             break;
                         case "+End":
@@ -1313,18 +1325,17 @@ namespace AcuGitLibrary
                             response.Add(s);
                             break;
                     }
-
                 }
-                return response.ToArray();
-            }
-            catch (Exception e) {
-                string[] b = { "broken", "lines read incorrectly" };
-                try
-                {
-                    return b;
+                catch (Exception buildEx) {
+                    string[] b = { "Failed At Switch", "lines wrote incorrectly" };
+                    try
+                    {
+                        return b;
+                    }
+                    catch (Exception e) { return null; }
                 }
-                catch (Exception e3) { return null; }
             }
+            return response.ToArray();
         }
     }
     /// <summary>
